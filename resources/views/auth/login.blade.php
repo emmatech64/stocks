@@ -1,89 +1,105 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('lib/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/css/skin-blue.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-                @if(Session::has('message'))
-                    <div class="alert alert-danger">
-                        <h5>
-                            {{ Session::get('message') }}
-                        </h5>
-                    </div>
-                @endif
-
-                <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
-
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('signIn') }}">
-                            @csrf
-
-                            <div class="form-group row">
-                                <label for="email"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                           class="form-control @error('email') is-invalid @enderror" name="email"
-                                           value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                           class="form-control @error('password') is-invalid @enderror" name="password"
-                                           required autocomplete="current-password">
-
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember"
-                                               id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
-
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <div class="login-logo">
+            <a href="">
+                SMS
+            </a>
         </div>
+        @if(Session::has('message'))
+            <div class="alert alert-danger flat">
+                <h5>
+                    {{ Session::get('message') }}
+                </h5>
+            </div>
+        @endif
+
+        <p class="login-box-msg">Sign in to start your session</p>
+
+
+        <form method="POST" action="{{ route('signIn') }}" novalidate>
+            @csrf
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" placeholder="{{ __('E-Mail Address') }}"
+                       name="email"
+                       value="{{ old('email') }}"
+                       required autocomplete="email" autofocus>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="form-group has-feedback">
+                <input id="password" type="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       name="password" placeholder="{{ __('Password') }}"
+                       required autocomplete="current-password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                 </span>
+                @enderror
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <br>
+        <h4 class="text-center">Or</h4>
+        <br>
+        <a class="btn btn-link btn-block" href="">
+            {{ __('Forgot Your Password?') }}
+        </a>
+        <br>
+
     </div>
-@endsection
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+
+</body>
+</html>
+
+
+

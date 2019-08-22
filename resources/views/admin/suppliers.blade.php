@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Products')
+@section('title','Suppliers')
 @section('content')
     <section class="content">
         <div class="col-12">
@@ -12,11 +12,11 @@
                 <div class="box-header with-border">
                     <div class="col-md-6">
                         <h4 class="box-title">
-                            Manage Products
+                            Manage Suppliers
                         </h4>
                     </div>
                     <div class="col-md-6">
-                        <form action="{{ route('products.all') }}" method="get">
+                        <form action="{{ route('suppliers.all') }}" method="get">
                             <div id="custom-search-input">
                                 <div class="input-group ">
                                     <input type="text" name="q" id="query" class="form-control flat"
@@ -31,47 +31,36 @@
                         </form>
                     </div>
                 </div>
-                {{--                    {{ $products }}--}}
                 <div class="box-body">
                     <table class="table table-condensed table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Name</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Unit Measure</th>
-                            <th scope="col">In stock</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $prod)
+                        @foreach($suppliers as $sup)
                             <tr>
-                                <td>{{ $prod->name}}</td>
-                                <td>{{ $prod->category->name}}</td>
-                                <td>{{ $prod->unit_measure}}</td>
-                                <td>
-                                    <?php
-                                    $qty = $prod->stocks->sum('qty');
-                                    if($qty <= 5){
-                                    ?>
-                                    <span class="label label-danger">{{ $qty }}</span>
-                                    <?php
-                                    }else{
-                                    ?>
-                                    <span class="label label-info">{{ $qty }}</span>
-                                    <?php }?>
-                                </td>
+                                <td>{{ $sup->name}}</td>
+                                <td>{{ $sup->email}}</td>
+                                <td>{{ $sup->address}}</td>
+                                <td>{{ $sup->phone_number}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button
-                                                data-url="{{ route('products.show',['id'=>$prod->id]) }}"
+                                                data-url="{{ route('suppliers.show',['id'=>$sup->id]) }}"
                                                 class="btn btn-secondary js-edit">
-                                            Edit
+                                            <i class="glyphicon glyphicon-edit"></i>
+
                                         </button>
                                         <button
-                                                data-url="{{ route('products.destroy',['id'=>$prod->id]) }}"
+                                                data-url="{{ route('suppliers.destroy',['id'=>$sup->id]) }}"
                                                 class="btn btn-danger js-delete">
-                                            Delete
+                                            <i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -94,13 +83,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        Products
+                        Supplier
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </h4>
                 </div>
-                <form novalidate action="{{ route('products.store') }}" method="post" id="submitForm"
+                <form novalidate action="{{ route('suppliers.store') }}" method="post" id="submitForm"
                       class="form-horizontal">
                     <input type="hidden" id="id" name="id" value="0">
                     {{ csrf_field() }}
@@ -114,24 +103,28 @@
                                            id="name">
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="category_id" class="col-sm-3  control-label">Category</label>
+                                <label for="email" class="col-sm-3 control-label">Email</label>
                                 <div class="col-sm-9">
-                                    <select required class="form-control" id="category_id" name="category_id">
-                                        <option></option>
-                                        @foreach($category as $cat)
-                                            <option value="{{ $cat->id}}">
-                                                {{$cat->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="email" class="form-control" name="email" id="email">
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="unit_measure" class="col-sm-3 control-label">Measure</label>
+                                <label for="address" class="col-sm-3 control-label">Address</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="unit_measure" id="unit_measure"
-                                           required>
+                                    <input type="text" required minlength="2" class="form-control" name="address"
+                                           id="address">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone_number" class="col-sm-3 control-label">Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="tel"
+                                           required minlength="10" maxlength="13"
+                                           class="form-control" name="phone_number" id="phone_number">
                                 </div>
                             </div>
                         </div>
@@ -151,8 +144,8 @@
 @section('scripts')
     <script>
         $(function () {
-            $('.mn-products').addClass('active');
-            //edit product
+            $('.mn-suppliers').addClass('active');
+            //edit
             $('.js-edit').on('click', function () {
                 var url = $(this).attr('data-url');
                 $('#addModal').modal('show');
@@ -162,8 +155,9 @@
                         hideLoader();
                         $('#name').val(data.name);
                         $('#id').val(data.id);
-                        $('#unit_measure').val(data.unit_measure);
-                        $('#category_id').val(data.category_id);
+                        $('#email').val(data.email);
+                        $('#address').val(data.address);
+                        $('#phone_number').val(data.phone_number);
                     });
             });
 

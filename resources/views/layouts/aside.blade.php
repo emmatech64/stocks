@@ -33,14 +33,14 @@
                     <i class="fa fa-list-alt"></i> <span>Products</span>
                 </a>
             </li>
-            <li class="mn-purcheses">
-                <a href="{{url('/admin/purchasses')}}">
-                    <i class="fa fa-list-ul"></i> <span>Purchases</span>
+            <li class="mn-suppliers">
+                <a href="{{ route('suppliers.all') }}">
+                    <i class="ion ion-android-people"></i> <span>Suppliers</span>
                 </a>
             </li>
             <li class="mn-menu">
-                <a href="{{url('/admin/sale')}}">
-                    <i class="fa fa-shopping-cart"></i> <span>Sales</span>
+                <a href="{{ route('stocks.all') }}">
+                    <i class="fa fa-home"></i> <span>Stock</span>
                 </a>
             </li>
             <li class="treeview menu-open mn-reports">

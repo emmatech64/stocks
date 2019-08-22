@@ -21,7 +21,8 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">name</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Products</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -30,13 +31,7 @@
                         <tr>
                             <th scope="row">{{ $cat->id }}</th>
                             <td>{{ $cat->name }}</td>
-                        <!--      <td>
-                                        <ul>
-                                            @foreach($cat->products as $prod)
-                            <li>{{ $prod->name}}</li>
-                                        @endforeach
-                            </ul>
-                        </td> -->
+                            <td>{{$cat->products->count()}}</td>
                             <td>
                                 <div class="btn-group flat">
                                     <button class="btn flat btn-secondary js-edit"

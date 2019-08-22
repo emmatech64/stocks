@@ -3,6 +3,13 @@ $(window).on('load',
     function() {
         $('.loader').fadeOut(500);
         $('#submitForm').validate();
+
+        $(function () {
+            $('#logout_link').on('click',function (e) {
+                e.preventDefault();
+                $('#logoutForm').submit();
+            });
+        });
     });
 
 //$(document).ajaxStart(function() { Pace.restart(); });

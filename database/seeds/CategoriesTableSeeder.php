@@ -13,11 +13,11 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        //creating 20  fake categories
-        factory(App\Category::class, 20)
-            ->create()
-            ->each(function ($category) {
-                $category->save();
-            });
+        $categories = ['Phone', 'Laptop', 'PC', 'Fruits', 'Shoes', 'T-shirt', 'Shirt', 'Drinks'];
+        foreach ($categories as $category) {
+            \App\Category::Create([
+                'name' => $category
+            ]);
+        }
     }
 }

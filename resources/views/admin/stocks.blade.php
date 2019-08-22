@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Products')
+@section('title','Stocking')
 @section('content')
     <section class="content">
         <div class="col-12">
@@ -10,68 +10,44 @@
             <div class="clearfix"></div>
             <div class="box box-primary flat">
                 <div class="box-header with-border">
-                    <div class="col-md-6">
-                        <h4 class="box-title">
-                            Manage Products
-                        </h4>
-                    </div>
-                    <div class="col-md-6">
-                        <form action="{{ route('products.all') }}" method="get">
-                            <div id="custom-search-input">
-                                <div class="input-group ">
-                                    <input type="text" name="q" id="query" class="form-control flat"
-                                           placeholder="Search .....">
-                                    <span class="input-group-btn">
-                                <button class="btn btn-primary flat" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <h4 class="box-title">
+                        Manage Stock
+                    </h4>
                 </div>
-                {{--                    {{ $products }}--}}
                 <div class="box-body">
                     <table class="table table-condensed table-hover">
                         <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Unit Measure</th>
-                            <th scope="col">In stock</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Supplier</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Expiry Date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $prod)
+                        @foreach($stocks as $stock)
                             <tr>
-                                <td>{{ $prod->name}}</td>
-                                <td>{{ $prod->category->name}}</td>
-                                <td>{{ $prod->unit_measure}}</td>
                                 <td>
-                                    <?php
-                                    $qty = $prod->stocks->sum('qty');
-                                    if($qty <= 5){
-                                    ?>
-                                    <span class="label label-danger">{{ $qty }}</span>
-                                    <?php
-                                    }else{
-                                    ?>
-                                    <span class="label label-info">{{ $qty }}</span>
-                                    <?php }?>
+                                    <a href="{{ route('products.all') }}?q={{ $stock->product->name}}">
+                                        {{ $stock->product->name}}
+                                    </a>
                                 </td>
+                                <td>{{ $stock->supplier->name}}</td>
+                                <td>{{ $stock->qty}}</td>
+                                <td>{{ number_format($stock->price)}}</td>
+                                <td>{{ $stock->expiry_date}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button
-                                                data-url="{{ route('products.show',['id'=>$prod->id]) }}"
+                                                data-url="{{ route('stocks.show',['id'=>$stock->id]) }}"
                                                 class="btn btn-secondary js-edit">
-                                            Edit
+                                            <i class="glyphicon glyphicon-edit"></i>
                                         </button>
                                         <button
-                                                data-url="{{ route('products.destroy',['id'=>$prod->id]) }}"
+                                                data-url="{{ route('stocks.destroy',['id'=>$stock->id]) }}"
                                                 class="btn btn-danger js-delete">
-                                            Delete
+                                            <i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -94,13 +70,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        Products
+                        Stock
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </h4>
                 </div>
-                <form novalidate action="{{ route('products.store') }}" method="post" id="submitForm"
+                <form novalidate action="{{ route('stocks.store') }}" method="post" id="submitForm"
                       class="form-horizontal">
                     <input type="hidden" id="id" name="id" value="0">
                     {{ csrf_field() }}
@@ -108,30 +84,49 @@
                         @include('layouts._loader')
                         <div class="edit-result">
                             <div class="form-group">
-                                <label for="name" class="col-sm-3 control-label">Name</label>
+                                <label for="supplier_id" class="col-sm-3  control-label">Supplier</label>
                                 <div class="col-sm-9">
-                                    <input required minlength="2" type="text" class="form-control" name="name"
-                                           id="name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="category_id" class="col-sm-3  control-label">Category</label>
-                                <div class="col-sm-9">
-                                    <select required class="form-control" id="category_id" name="category_id">
+                                    <select required class="form-control" id="supplier_id" name="supplier_id">
                                         <option></option>
-                                        @foreach($category as $cat)
-                                            <option value="{{ $cat->id}}">
-                                                {{$cat->name}}
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->id}}">
+                                                {{$supplier->name}}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="unit_measure" class="col-sm-3 control-label">Measure</label>
+                                <label for="product_id" class="col-sm-3  control-label">Product</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="unit_measure" id="unit_measure"
+                                    <select required class="form-control" id="product_id" name="product_id">
+                                        <option></option>
+                                        @foreach($products as $prod)
+                                            <option value="{{ $prod->id}}">
+                                                {{$prod->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="qty" class="col-sm-3 control-label">Qty</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" name="qty" id="qty"
                                            required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-3 control-label">Price</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" name="price" id="price"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="expiry_date" class="col-sm-3 control-label">Expiry Date</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="expiry_date" id="expiry_date">
                                 </div>
                             </div>
                         </div>
@@ -151,7 +146,7 @@
 @section('scripts')
     <script>
         $(function () {
-            $('.mn-products').addClass('active');
+            $('.mn-stocks').addClass('active');
             //edit product
             $('.js-edit').on('click', function () {
                 var url = $(this).attr('data-url');
@@ -160,10 +155,12 @@
                 $.getJSON(url)
                     .done(function (data) {
                         hideLoader();
-                        $('#name').val(data.name);
+                        $('#supplier_id').val(data.supplier_id);
+                        $('#product_id').val(data.product_id);
                         $('#id').val(data.id);
-                        $('#unit_measure').val(data.unit_measure);
-                        $('#category_id').val(data.category_id);
+                        $('#qty').val(data.qty);
+                        $('#price').val(data.price);
+                        $('#expiry_date').val(data.expiry_date);
                     });
             });
 

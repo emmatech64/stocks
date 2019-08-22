@@ -30,7 +30,7 @@
                             <img src="{{ asset('img/avatar.png') }}" class="img-circle" alt="User Image">
 
                             <p>
-                                {{ Auth::user()->name }} -  {{ Auth::user()->role }}
+                                {{ Auth::user()->name }} - {{ Auth::user()->role }}
                             </p>
                         </li>
 
@@ -40,7 +40,9 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="" onclick="preventDefault();document.getElementById('logoutForm').submit();" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="#"
+                                   id="logout_link"
+                                   class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
                     </ul>
@@ -51,6 +53,6 @@
     </nav>
 </header>
 
-<form  id="logoutForm" style="display: none" action="{{ route('logout') }}">
+<form id="logoutForm" style="display: none" action="{{ route('logout') }}" method="post">
     @csrf
 </form>

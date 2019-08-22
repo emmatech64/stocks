@@ -25,25 +25,34 @@ Route::post('/login', 'UsersController@signIn')->name('signIn');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', 'HomeController@dashboard')->name('dashboard');
-    Route::post('/logout', 'UsersController@logout')->name('logout');
 
-    Route::get('/admin/categories', 'CategoriesController@index')->name('categories.all');
-    Route::post('/admin/categories', 'CategoriesController@store')->name('category.store');
-    Route::get('/admin/categories/{category}', 'CategoriesController@show')->name('category.show');
-    Route::delete('/admin/categories/{category}', 'CategoriesController@destroy')->name('category.destroy');
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+        Route::post('/logout', 'UsersController@logout')->name('logout');
 
-    Route::get('/admin/products', 'ProductsController@index')->name('products.all');
-    Route::post('/admin/products', 'ProductsController@store')->name('products.store');
-    Route::get('/admin/products/{product}', 'ProductsController@show')->name('products.show');
-    Route::delete('/admin/products/{product}', 'ProductsController@destroy')->name('products.destroy');
+        Route::get('/categories', 'CategoriesController@index')->name('categories.all');
+        Route::post('/categories', 'CategoriesController@store')->name('category.store');
+        Route::get('/categories/{category}', 'CategoriesController@show')->name('category.show');
+        Route::delete('/categories/{category}', 'CategoriesController@destroy')->name('category.destroy');
+
+        Route::get('/products', 'ProductsController@index')->name('products.all');
+        Route::post('/products', 'ProductsController@store')->name('products.store');
+        Route::get('/products/{product}', 'ProductsController@show')->name('products.show');
+        Route::delete('/products/{product}', 'ProductsController@destroy')->name('products.destroy');
+
+        Route::get('/suppliers', 'SuppliersController@index')->name('suppliers.all');
+        Route::post('/suppliers', 'SuppliersController@store')->name('suppliers.store');
+        Route::get('/suppliers/{supplier}', 'SuppliersController@show')->name('suppliers.show');
+        Route::delete('/suppliers/{supplier}', 'SuppliersController@destroy')->name('suppliers.destroy');
+
+        Route::get('/stock', 'StocksController@index')->name('stocks.all');
+        Route::post('/stock', 'StocksController@store')->name('stocks.store');
+        Route::get('/stock/{stock}', 'StocksController@show')->name('stocks.show');
+        Route::delete('/stock/{stock}', 'StocksController@destroy')->name('stocks.destroy');
+    });
 });
 
 
 
-
-
-
-Route::get('/admin/purchases/{purchases}', 'PurchasesController@index')->name('purchases.all');
 
 

@@ -39,8 +39,9 @@
                             <th scope="col">Name</th>
                             <th scope="col">Category</th>
                             <th scope="col">Unit Measure</th>
+                            <th scope="col">Price</th>
                             <th scope="col">In stock</th>
-                            <th scope="col">Action</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,23 +50,19 @@
                                 <td>{{ $prod->name}}</td>
                                 <td>{{ $prod->category->name}}</td>
                                 <td>{{ $prod->unit_measure}}</td>
+                                <td>{{ number_format($prod->price)}}</td>
                                 <td>
-                                    <?php
-                                    $qty = $prod->stocks->sum('qty');
-                                    if($qty <= 5){
-                                    ?>
-                                    <span class="label label-danger">{{ $qty }}</span>
-                                    <?php
-                                    }else{
-                                    ?>
-                                    <span class="label label-info">{{ $qty }}</span>
-                                    <?php }?>
+                                    @if($prod->qty <= 5)
+                                        <span class="label label-danger">{{ $prod->qty }}</span>
+                                    @else
+                                        <span class="label label-info">{{ $prod->qty }}</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="btn-group">
                                         <button
                                                 data-url="{{ route('products.show',['id'=>$prod->id]) }}"
-                                                class="btn btn-secondary js-edit">
+                                                class="btn btn-default js-edit">
                                             Edit
                                         </button>
                                         <button
@@ -134,11 +131,18 @@
                                            required>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-3 control-label">Price</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="price" id="price"
+                                           required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer editFooter">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" id="createBtn" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -151,6 +155,7 @@
 @section('scripts')
     <script>
         $(function () {
+            $('.tr-products').addClass('active');
             $('.mn-products').addClass('active');
             //edit product
             $('.js-edit').on('click', function () {
@@ -164,6 +169,7 @@
                         $('#id').val(data.id);
                         $('#unit_measure').val(data.unit_measure);
                         $('#category_id').val(data.category_id);
+                        $('#price').val(data.price);
                     });
             });
 

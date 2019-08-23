@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Stock extends Model
 {
-    protected $casts = ['expiry_date'];
 
     public function supplier()
     {

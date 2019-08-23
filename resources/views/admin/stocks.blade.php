@@ -21,8 +21,6 @@
                             <th scope="col">Product</th>
                             <th scope="col">Supplier</th>
                             <th scope="col">Qty</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Expiry Date</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,13 +33,11 @@
                                 </td>
                                 <td>{{ $stock->supplier->name}}</td>
                                 <td>{{ $stock->qty}}</td>
-                                <td>{{ number_format($stock->price)}}</td>
-                                <td>{{ $stock->expiry_date}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button
                                                 data-url="{{ route('stocks.show',['id'=>$stock->id]) }}"
-                                                class="btn btn-secondary js-edit">
+                                                class="btn btn-default js-edit">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </button>
                                         <button
@@ -116,24 +112,11 @@
                                            required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="price" class="col-sm-3 control-label">Price</label>
-                                <div class="col-sm-9">
-                                    <input type="number" class="form-control" name="price" id="price"
-                                           required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="expiry_date" class="col-sm-3 control-label">Expiry Date</label>
-                                <div class="col-sm-9">
-                                    <input type="date" class="form-control" name="expiry_date" id="expiry_date">
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer editFooter">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="submit" id="createBtn" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -146,6 +129,7 @@
 @section('scripts')
     <script>
         $(function () {
+            $('.tr-products').addClass('active');
             $('.mn-stocks').addClass('active');
             //edit product
             $('.js-edit').on('click', function () {

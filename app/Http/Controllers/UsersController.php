@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+
+    public function index()
+    {
+        $users = User::with('role')->paginate(10);
+        $roles = Role::all();
+        return view('admin.users', ['users' => $users, 'role' => $roles]);
+    }
+
     public function login()
     {
         return view('auth.login');

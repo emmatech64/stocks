@@ -36,6 +36,7 @@ class ProductsController extends Controller
                 $prod->name = $request->name;
                 $prod->unit_measure = $request->unit_measure;
                 $prod->category_id = $request->category_id;
+                $prod->price = $request->price;
                 $prod->update();
             }
         } else {
@@ -43,11 +44,21 @@ class ProductsController extends Controller
             $prod->name = $request->name;
             $prod->unit_measure = $request->unit_measure;
             $prod->category_id = $request->category_id;
+            $prod->price = $request->price;
             $prod->save();
         }
         return response()->json($prod, 200);
     }
 
+
+    public function byCategory($categoryId)
+    {
+        $product = Product::where([
+            ['category_id', '=', $categoryId],
+            ['qty', '>', 0]
+        ])->get();
+        return response()->json($product, 200);
+    }
 
     public function show(Product $product)
     {
@@ -60,4 +71,6 @@ class ProductsController extends Controller
         $product->delete();
         return response()->json(null, 204);
     }
+
+
 }

@@ -28,36 +28,57 @@
                     <i class="fa fa-list-ul"></i> <span>Categories</span>
                 </a>
             </li>
-            <li class="mn-products">
-                <a href="{{ url('/admin/products') }}">
-                    <i class="fa fa-list-alt"></i> <span>Products</span>
-                </a>
-            </li>
+
+
+
             <li class="mn-suppliers">
                 <a href="{{ route('suppliers.all') }}">
                     <i class="ion ion-android-people"></i> <span>Suppliers</span>
                 </a>
             </li>
-            <li class="mn-menu">
-                <a href="{{ route('stocks.all') }}">
-                    <i class="fa fa-home"></i> <span>Stock</span>
-                </a>
-            </li>
-            <li class="treeview menu-open mn-reports">
-                <a href="">
-                    <i class="ion-ios-settings-strong"></i> <span>Products</span>
+
+
+            <li class="treeview tr-products">
+                <a href="#">
+                    <i class="ion ion-ios-list"></i> <span>Products</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active">
-                        <a href="{{ url('/admin/products') }}"><i class="fa fa-circle-o"></i> Sotck</a></li>
-                    <li><a href="index2.html"><i class="fa fa-circle-o"></i> Requisitions</a></li>
+                    <li class="mn-products">
+                        <a href="{{ url('/admin/products') }}">
+                            <i class="fa fa-circle-o"></i>
+                            Manage products
+                        </a>
+                    </li>
+                    <li class="mn-stocks">
+                        <a href="{{ route('stocks.all') }}">
+                            <i class="fa fa-circle-o"></i>
+                            Stocking
+                        </a>
+                    </li>
+                    <li class="mn-requisitions">
+                        <a href="{{ route('requisitions.all') }}">
+                            <i class="fa fa-circle-o"></i>
+                            Requisitions
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('requests') }}">
+                            <i class="fa fa-circle-o"></i>
+                            Requests
+                        </a>
+                    </li>
                 </ul>
             </li>
+            <li class="mn-users">
+                <a href="{{ route('suppliers.all') }}">
+                    <i class="fa fa-users"></i> <span>Users</span>
+                </a>
+            </li>
 
-            <li class="treeview menu-open mn-reports">
+            <li class="treeview mn-reports">
                 <a href="#">
                     <i class="ion ion-printer"></i> <span>Reports</span>
                     <span class="pull-right-container">
@@ -70,6 +91,9 @@
                     <li><a href="index2.html"><i class="fa fa-circle-o"></i> Report v2</a></li>
                 </ul>
             </li>
+
+
+
         </ul>
     </section>
     <!-- /.sidebar -->

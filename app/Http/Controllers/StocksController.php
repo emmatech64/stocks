@@ -30,13 +30,15 @@ class StocksController extends Controller
     public function store(Request $request)
     {
         if ($request->id && $request->id > 0) {
-            $stock = Stock::find($request->id);
+            $stock = Stock::with('product')->find($request->id);
             if ($stock) {
+
+                // update stock product qty
+                $this->updateProductQtyWhenEditStockItem($request, $stock);
+
                 $stock->supplier_id = $request->supplier_id;
                 $stock->product_id = $request->product_id;
                 $stock->qty = $request->qty;
-                $stock->price = $request->price;
-                $stock->expiry_date = $request->expiry_date;
                 $stock->update();
             }
         } else {
@@ -44,13 +46,33 @@ class StocksController extends Controller
             $stock->supplier_id = $request->supplier_id;
             $stock->product_id = $request->product_id;
             $stock->qty = $request->qty;
-            $stock->price = $request->price;
-            $stock->expiry_date = $request->expiry_date;
             $stock->save();
+            // update stock product qty
+            $this->updateProductQtyWhenStockingItem($stock);
         }
         return response()->json($stock, 200);
     }
-
+    /**
+     * @param Request $request
+     * @param $stock
+     */
+    private function updateProductQtyWhenEditStockItem(Request $request, $stock): void
+    {
+        $prevSupQty = $stock->qty;
+        $newSupQty = $request->qty;
+        $prodQty = $stock->product->qty;
+        $newProdQty = ($prodQty - $prevSupQty) + $newSupQty;
+        $stock->product->qty = $newProdQty;
+        $stock->product->update();
+    }
+    /**
+     * @param Stock $stock
+     */
+    public function updateProductQtyWhenStockingItem(Stock $stock): void
+    {
+        $stock->product->qty += $stock->qty;
+        $stock->product->update();
+    }
 
     public function show(Stock $stock)
     {
@@ -63,4 +85,7 @@ class StocksController extends Controller
         $stock->delete();
         return response()->json(null, 204);
     }
+
+
+
 }

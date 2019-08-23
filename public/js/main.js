@@ -23,6 +23,7 @@ $(function () {
     // $('.select2').select2();
     $('#addButton').click(function() {
         $('.myModal').modal('show');
+        $('#submitForm')[0].reset();
         $('#id').val(0);
     });
 
@@ -68,7 +69,7 @@ $(function () {
             button.button('loading');
             $.ajax({
                 url: form.attr('action'),
-                type: "POST",
+                type: form.attr('method'),
                 data: form.serialize()
             }).done(function(response) {
                 // button loading
